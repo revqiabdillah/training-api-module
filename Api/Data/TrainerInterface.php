@@ -48,4 +48,19 @@ interface TrainerInterface
      * @return $this
      */
     public function setDivisi($divisi);
+
+     /**
+     * Get trainer hobby
+     *
+     * @return string|null
+     */
+    public function getHobby();
+
+    /**
+     * Set trainer hobby
+     *
+     * @param string $hobby
+     * @return $this
+     */
+    public function setHobby($hobby);
 }

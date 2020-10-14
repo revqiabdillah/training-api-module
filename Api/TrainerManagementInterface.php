@@ -41,4 +41,24 @@ interface TrainerManagementInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException If the trainer id is invalid
 	 */
 	public function deleteTrainerById($id);
+
+	/**
+	 * Delete trainer by name
+     *
+	 * @param string $name
+	 * @return Icube\TrainingApi\Api\Data\TrainerInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException If the trainer name is invalid
+	 */
+	public function deleteTrainerByName($name);
+
+	 /**
+	 * Put trainer by id
+     *
+	 * @param int $id
+	 * @param Icube\TrainingApi\Api\Data\TrainerInterface $trainer
+	 * @return Icube\TrainingApi\Api\Data\TrainerInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
+	 */
+
+	public function updateTrainerById($id, TrainerInterface $trainer);
 }

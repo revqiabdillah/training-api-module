@@ -91,8 +91,25 @@ class TrainerManagement implements TrainerManagementInterface
         $trainer->load($id);
         $trainer->delete();
 		return $trainer;
-	}
+    }
+    
+       /**
+	 * {@inheritdoc}
+	 */
+	public function deleteTrainerByName($name)
+	{
+        $collection = $this->trainerFactory->create()->getCollection();
+        $collection->addFieldToFilter('name', $name);
+        $countDelete = 0;
+        foreach($collection as $trainer) {
+            $delete = $trainer->delete();
+            if ($delete) $countDelete += 1;
+        }
 
+        return 'Success delete trainer : '.$countDelete;
+    }
+    
+   
     /**
 	 * {@inheritdoc}
 	 */
@@ -101,7 +118,35 @@ class TrainerManagement implements TrainerManagementInterface
         $this->trainerValidate($trainer);
         $trainer->save();
         return $trainer;
+    }
+    
+
+     /**
+	 * {@inheritdoc}
+	 */
+	public function updateTrainerById($id, TrainerInterface $trainer)
+	{
+        $validate = $this->trainerUpdateValidate($id, $trainer);
+        if (array_values($validate)[0]) {
+            return array_values($validate)[1];
+        } else {
+            $collection = $this->trainerFactory->create();
+            $data = $collection->load($id);
+            if ($data->getId()) {
+                $data->setName($trainer->getName());
+                $data->setDivisi($trainer->getDivisi());
+                $data->setHobby($trainer->getHobby());
+                $data->save();
+            } else {
+                throw new LocalizedException(
+                    __("Data not found.")
+                );
+            }
+
+            return $data;
+        }
 	}
+
 
     /**
 	 * Trainer validate
@@ -124,6 +169,36 @@ class TrainerManagement implements TrainerManagementInterface
             );
         }
 
+        if (empty($trainer->getHobby())) {
+            throw new LocalizedException(
+                __("The hobby Can't be empty.")
+            );
+        }
+
         return $trainer;
+    }
+
+    /**
+	 * Trainer update validate
+     *
+     * @param int $id
+	 * @param Icube\TrainingApi\Api\Data\TrainerInterface $trainer
+	 * @return Icube\TrainingApi\Api\Data\TrainerInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
+	 */
+
+    protected function trainerUpdateValidate($id, TrainerInterface $trainer)
+    {
+        $error = false;
+        $errorMessage = '';
+        if (empty($id)) {
+            $error = true;
+            $errorMessage = 'Trainer id is required';
+        }
+
+        return [
+            "error" => $error,
+            "message" => $errorMessage,
+        ];
     }
 }

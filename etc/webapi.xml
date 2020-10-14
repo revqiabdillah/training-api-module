@@ -45,4 +45,17 @@
 		</resources>
 	</route>
 
+	<route url="/V1/training/trainer/delete/:name" method="DELETE" >
+		<service class="Icube\TrainingApi\Api\TrainerManagementInterface" method="deleteTrainerByName"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+	<route url="/V1/training/trainer/update/:id" method="PUT" >
+		<service class="Icube\TrainingApi\Api\TrainerManagementInterface" method="updateTrainerById"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+
 </routes>

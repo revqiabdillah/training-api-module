@@ -50,6 +50,20 @@ class Trainer extends AbstractModel implements IdentityInterface, TrainerInterfa
     /**
      * @inheritDoc
      */
+    public function getHobby() {
+        return $this->_getData('hobby');
+    }
+
+       /**
+     * @inheritDoc
+     */
+    public function setHobby($hobby) {
+        return $this->setData('hobby', $hobby);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function setDivisi($divisi)
     {
         return $this->setData('divisi', $divisi);
